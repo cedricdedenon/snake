@@ -1,0 +1,267 @@
+/* ********************************************
+					HEADER
+**********************************************/
+header{
+	text-align: center;
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	background-color: whitesmoke;
+	height: 10vh;
+}
+
+img{
+	width: 60px;
+	margin-right: 20px;
+}
+
+
+/* ********************************************
+					MAIN
+**********************************************/
+main{
+	height: 82vh;
+}
+
+
+/* ********************************************
+			MAIN (SECTION INFOS)
+**********************************************/
+#section-infos{
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	background-color: lightblue;
+	padding: 8px;
+}
+
+#section-infos p {
+	margin: 0;
+	margin-right: 20px;
+	padding: 5px;
+}
+
+#new{
+	background-color: lightgreen;
+	margin-left: 20px;
+}
+
+#options{
+	background-color: gold;
+	margin-left: 20px;
+}
+
+
+/* ********************************************
+			MAIN (SECTION FORM)
+**********************************************/
+form{
+	background-color: #DDD;
+	background-color: lightblue;
+	padding: 10px;
+	display: flex;
+	justify-content: space-around;
+	align-items: flex-start;
+}
+
+form div{
+	margin: 5px;
+}
+
+input, button{
+	border-radius: 5px;
+	padding: 5px;
+}
+
+button[type="submit"]{
+	background-color: lightgreen;
+}
+
+#section-form{
+	margin-bottom: 20px;
+}
+
+#snake_color, #food_color, #obstacles_color{
+	margin-right: 10px;
+}
+
+
+/* ********************************************
+			MAIN (SECTION GAME)
+**********************************************/
+#container{
+	width: 400px;
+	height: 200px;
+	margin: auto;
+	border: 1px solid black;
+	position: relative;
+	overflow: hidden;
+	box-shadow: 1px 1px 10px black;
+}
+
+#snake_head{
+	width: 10px;
+	height: 10px;
+	position: absolute;
+	background-color: grey;
+	top: 100px;
+	left: 200px;
+	z-index: 1;
+}
+
+#food{
+	width: 10px;
+	height: 10px;
+	position: absolute;
+	border-radius: 50%;
+	background-color: red;
+	display: none;
+}
+
+.snake_body{
+	position: absolute;
+	width: 10px;
+	height: 10px;
+	background-color: black;
+}
+
+#section-game{
+	margin-top: 30px;
+}
+
+.obstacle{
+	position: absolute;
+	width: 3px;
+	height: 20px;
+	background-color: royalblue;
+}
+
+
+/* ********************************************
+		FENETRE MODAL- MEILLEURS SCORES
+**********************************************/
+#section-score{
+	display: none;
+	z-index: 1;
+	padding-top: 100px;
+    position: fixed;
+    left: 0;
+    top: 0;
+    width: 100%;
+   	height: 100%;
+   	overflow: auto;
+   	background-color: rgb(0,0,0); 
+    background-color: rgba(0,0,0,0.4);
+    transition: all 1.1s ease-out;
+}
+
+#modal-content {
+	position: relative;
+    background-color: #fefefe;
+    margin: auto;
+    width: 90%;
+    height: 520px;
+    max-width: 800px;
+    padding: 0;
+    border: 1px solid #888;
+    box-shadow: 0 4px 8px 0 rgba(0,0,0,0.2),0 6px 20px 0 rgba(0,0,0,0.19);
+    animation-name: animatetop;
+    animation-duration: 0.3s;
+    animation-fill-mode: both;
+}
+
+#historique{
+	background-color: crimson;
+	color: #FFF;
+}
+
+#historique:hover{
+	background-color: #FFF;
+	color: crimson;
+}
+
+@keyframes animatetop {
+    from {top: -300px; opacity: 0}
+    to {top: 0; opacity: 1}
+}
+
+article{
+	padding: 10px;
+}
+
+#onglets{
+	display: flex;
+	justify-content: space-around;
+	align-items: center;
+	background-color: lightblue;
+	padding: 5px;
+}
+
+#onglets, h2{
+	text-align: center;
+}
+
+#onglets span{
+	padding: 5px;
+	font-weight: bold;
+}
+
+#onglets span.actif{
+	border-bottom: 2px solid blue;
+	color: blue;
+}
+
+#close {
+    color: darkred;
+    font-weight: bold;
+    font-size: 1.6em;
+}
+
+#close:hover,
+#close:focus {
+    color: red;
+    text-decoration: none;
+    cursor: pointer;
+}
+
+table{
+	border-collapse: collapse;
+	text-align: center;
+	margin: auto;
+	display: none;
+}
+
+td,th{
+	border: 1px solid black;
+	padding: 5px;
+	width: 120px;
+}
+
+tbody tr:first-child{
+	background-color: gold;
+}
+
+tbody tr:nth-child(2){
+	background-color: silver; 
+}
+
+tbody tr:nth-child(3){
+	background-color: Peru; 
+}
+
+article div{
+	text-align: center;
+	font-size: 1.2em;
+	color: red;
+}
+
+
+/* ********************************************
+				FOOTER
+**********************************************/
+footer{
+	padding: 10px;
+	text-align: center;
+	background-color: whitesmoke;
+	height: 3vh;
+}
