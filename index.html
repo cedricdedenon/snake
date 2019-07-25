@@ -12,145 +12,64 @@
 	<header>
 		<img src="img/snake.png" alt="image de serpent">
 		<h1>Snake</h1>
+		<small>&copy; 2018 - Tous droits réservés </small>
 	</header>
 	<main>
+		<!-- SECTION INFORMATION (affiche le temps, le score et les boutons) -->
 		<section id="section-infos">
 			<p><strong>SCORE: </strong><span id="score">0</span> <span id="points">pt<span></p>
 			<p><strong>TEMPS: </strong><span id="time">0</span></p>
 			<button id="bestscore">TOP 10 scores</button>
 			<button id="options">Options</button>
-			<button id="new">Nouvelle partie</button>
+			<button id="new">Rejouer</button>
 		</section>
 		
-		<section id="section-form">
-			<form method="POST" style="display: none">
-				<fieldset>
-					<legend>Paramètres</legend>
-					<div>
-						<label for="length_grid">Niveau :</label>
-						<select id="length_grid" autocomplete="off">
-							<option val="small">Expert</option>
-							<option val="medium" selected>Normal</option>
-							<option val="large">Facile</option>
-						</select>
-					</div>
-					<div>
-						<label>Obstacles ?</label>
-						<input type="radio" name="hard" value="yes" autocomplete="off">Oui
-						<input type="radio" name="hard" value="no" checked autocomplete="off">Non
-					</div>
-					<div>
-						<label for="animation_time">Vitesse : </label>
-						<select id="animation_time" autocomplete="off">
-							<option val="normal" selected>Normal</option>
-							<option val="fast">Rapide</option>
-							<option val="very_fast">Très rapide</option>
-						</select>
-					</div>
-				</fieldset>
-				<fieldset>
-					<legend>Couleurs</legend>
-					<label for="snake_color">Serpent:</label>
-					<select id="snake_color" autocomplete="off">
-						<option val="snake_black" selected>Noir</option>
-						<option val="snake_green" >Vert</option>
-						<option val="snake_brown">Marron</option>
-					</select>
-
-					<label for="food_color">Nourriture:</label>
-					<select id="food_color" autocomplete="off">
-						<option val="food_red" selected>Rouge</option>
-						<option val="food_gold" >Or</option>
-						<option val="food_fuchsia">Fuchsia</option>
-						<option val="food_lime">Lime</option>
-						<option val="food_cyan">Cyan</option>
-					</select>	
-
-					<label for="obstacles_color"> Obstacles:</label>
-					<select id="obstacles_color" autocomplete="off">
-						<option val="obstacles_blue" selected>Bleu</option>
-						<option val="obstacles_black">Noir</option>
-						<option val="obstacles_purple">Violet</option>
-					</select>	
-				</fieldset>
-				<div>
-					<button type="submit">Enregistrer</button>
+		<!-- SECTION MENU 'TOP 10' (affiche les 10 meilleurs scores de chaque niveau de difficulté) -->
+		<section id="section-score">
+			<div class="modal-content">
+				<div class="onglets">
+					<ul>
+						<li data-click="Expert" class="">Expert</li>
+						<li data-click="Normal" class="actif">Normal</li>
+						<li data-click="Facile" class="">Facile</li>
+						<li data-click="Personnalise" class="">Personnalisé</li>
+						<button id="historique" title="Supprimer tous les records"> Supprimer l'historique</button>
+						<span class="close">&times;</span>
+					</ul>
 				</div>
-			</form>
+			</div>
 		</section>
-		
+
+		<!-- SECTION MENU 'Options' -->
+		<section id="section-form">
+			<div class="modal-content">
+				<div class="onglets">
+					<ul>
+						<li data-click="form-default" class="">Standard</li>
+						<li data-click="form-perso" class="">Personnalisé</li>
+					</ul>
+				</div>
+				<div id="form-default">
+					<form method="POST"></form>
+				</div>
+				<div id="form-perso">
+					<form method="POST"></form>
+				</div>
+			</div>
+		</section>
+
+		<!-- SECTION GRILLE DU JEU -->
 		<section id="section-game">
 			<div id="container">
 				<div id="food"></div>
 				<div id="snake_head"></div>
 			</div>
 		</section>
-
-		<section id="section-score">
-			<div id="modal-content">
-				<div id="onglets">
-					<span data-click="Expert" class="">Expert</span>
-					<span data-click="Normal" class="actif">Normal</span>
-					<span data-click="Facile" class="">Facile</span>
-					<button id="historique"> Supprimer l'historique</button>
-					<span id="close">&times;</span>	
-				</div>
-
-				<article id="Expert">
-					<h2>TOP 10: Niveau Expert</h2>
-					<div></div>
-					<table id="scores_Expert">
-						<thead>
-							<tr>
-								<th>Score</th>
-								<th>Temps</th>
-								<th>Obstacles</th>	
-							</tr>
-						</thead>
-						<tbody>
-						</tbody>
-					</table>
-				</article>
-
-				<article id="Normal">
-					<h2>TOP 10: Niveau Normal</h2>
-					<div></div>
-					<table id="scores_Normal">
-						<thead>
-							<tr>
-								<th>Score</th>
-								<th>Temps</th>
-								<th>Obstacles</th>	
-							</tr>
-						</thead>
-						<tbody>
-						</tbody>
-					</table>
-				</article>
-
-				<article id="Facile">
-					<h2>TOP 10: Niveau Facile</h2>
-					<div></div>
-					<table id="scores_Facile">
-						<thead>
-							<tr>
-								<th>Score</th>
-								<th>Temps</th>
-								<th>Obstacles</th>	
-							</tr>
-						</thead>
-						<tbody>
-						</tbody>
-					</table>
-				</article>
-			</div>
-		</section>
 	</main>
 
-	<footer>
-		<small>&copy; 2018 - Tous droits réservés </small>
-	</footer>
   	<script src="https://code.jquery.com/jquery-3.3.1.min.js" integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8="       crossorigin="anonymous"> </script>
+	<script type="text/javascript" src="js/variables.js"></script>
+	<script type="text/javascript" src="js/functions.js"></script>
 	<script type="text/javascript" src="js/snake.js"></script>
 </body>
 </html>
