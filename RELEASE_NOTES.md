@@ -1,5 +1,9 @@
 # RELEASE NOTES JEU "Snake"
 
+## Version 1.2.1 [05/09/2019]
+* Correction de bugs de l'algorithme
+* Gestion de la compatibilité pour les navigateurs ne supportant pas le localStorage
+
 ## Version 1.2.0 [25/07/2019]
 * Ajout des raccourcis clavier
 	* Touche 'Espace', pour mettre en pause la partie. Un second appui sur la touche 'Espace' relance la partie en cours
@@ -22,7 +26,7 @@
 
 ## Version 1.0.1 [18/01/2019]
 Correction de bugs concernant la gestion générale du jeu
-Validé avec les navaigateurs Chrome, FireFox et Edge
+Validé avec les navigateurs Chrome, FireFox et Edge
 NOTE: sous Edge, lors de l'actualisation de la page, les valeurs par défaut du formulaire ne sont pas réinitialisés 
 
 ## Version 1.0.0 [24/11/2018]

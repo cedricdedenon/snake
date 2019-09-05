@@ -194,9 +194,9 @@ function testCollisionWall(snakeX, snakeY){
  */
 function managingContainer(wall = false){
     //	1.	On récupère les coordonnées de la tête du serpent
-    var snake_x = $('#snake_head').position().left;
-    var snake_y = $('#snake_head').position().top;
-
+    var snake_x = Math.round($('#snake_head').position().left);
+    var snake_y = Math.round($('#snake_head').position().top);
+ 
     //	2.	On teste si la tête du serpent touche une partie de son corps, un obstacle ou le mur extérieur
     //      Si true, la partie se termine et on relance une nouvelle partie
     if(testCollision(snake_x, snake_y) || testCollisionObstacles(snake_x, snake_y) || (wall && testCollisionWall(snake_x, snake_y))){
@@ -627,18 +627,25 @@ function createArticleRecord(numonglet = 'Normal'){
  * @return void
  */
 function initWindowRecord(){
-    var articles = ['Expert', 'Normal', 'Facile', 'Personnalise'];
-    articles.forEach(function(value){
-        var article = createArticleRecord(value);
-        $('#section-score .modal-content').append(article);
-    });
-    $('article div').html('Il n\'y a aucun record actuellement dans ce mode de jeu');
-
     keyboardOff = true;
     pauseGame();
-    writeRecord();	
-    $("article").hide();
-    $("#Normal").show();
+    if ( typeof localStorage != "undefined" && JSON){
+        var articles = ['Expert', 'Normal', 'Facile', 'Personnalise'];
+        articles.forEach(function(value){
+            var article = createArticleRecord(value);
+            $('#section-score .modal-content').append(article);
+        });
+        $('article div').html('Il n\'y a aucun record actuellement dans ce mode de jeu');
+        writeRecord();	
+        $("article").hide();
+        $("#Normal").show();
+    } else{
+        $('#section-score li, #section-score button').remove();
+        $('#section-score ul').css('justify-content', 'flex-end');
+        $('#section-score').css('display', 'block');
+        $('#section-score .modal-content').append('<article><h2>Votre navigateur ne supporte pas le localStorage.</h2> <div>Les scores ne peuvent pas être sauvegardés</div></article>'); 
+    }
+
 }
 
 /**
@@ -649,9 +656,11 @@ function initWindowRecord(){
 function closeWindowRecord()
 {
     $('#section-score').css('display', 'none');
-    $('#section-score .onglets li').removeClass("actif");
-    $('li[data-click="Normal"]').addClass('actif');
-    $('table').css('display', 'none');
+    if ( typeof localStorage != "undefined" && JSON) {
+        $('#section-score .onglets li').removeClass("actif");
+        $('li[data-click="Normal"]').addClass('actif');
+        $('table').css('display', 'none');
+    }
 }
 
 /**
