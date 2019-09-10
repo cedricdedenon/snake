@@ -104,7 +104,7 @@ function createObstacles(minObstacles, maxObstacles, obstacles_color, nb_obstacl
         }while (!coord_obstacle_OK);
         $('#obstacle_' + idObstacles).css('display','block').css('left', obstacle_x).css('top', obstacle_y);
 
-        //On affecte l'objet 'obstacle' avec les données générés précédemement
+        //On affecte l'objet 'obstacle' avec les données générés précédemment
         if(length === 0) obstacle.length = 20; else obstacle.length = 40;
         if(direction === 0){obstacle.width = 3; obstacle.height = obstacle.length} else {obstacle.width = obstacle.length; obstacle.height = 3};
         obstacle.coord.x = obstacle_x;
@@ -118,7 +118,7 @@ function createObstacles(minObstacles, maxObstacles, obstacles_color, nb_obstacl
 
 /**
  * setCoord(): met à jour les coordonnées du serpent dans la variable 'snake_body'.
- *			   On retire la dernière coordonnées (shift) et on insére la nouvelle coordonnée à la fin (push)
+ *			   On retire la dernière coordonnée (shift) et on insére la nouvelle coordonnée à la fin (push)
     * @param int - snakeX (coordonnées de la tête du serpent en X)
     * @param int - snakeY (coordonnées de la tête du serpent en Y)
     * @return void
@@ -302,7 +302,7 @@ function getTime(){
  */
 function openOptions(numonglet = 'form-default'){
     keyboardOff = true;
-    pauseOrStartGame();
+    pauseGame();
     if(default_form != numonglet){
         $('form fieldset, form div').remove();
         default_form = numonglet;
@@ -319,6 +319,9 @@ function openOptions(numonglet = 'form-default'){
  * @return void
  */
 function options(){
+    clearInterval(animation_snake);
+    clearInterval(time);
+    
     var minObstacles = 0, maxObstacles = 0;
     var grid_default = $('#difficulty').val();
     var obstacles = $('input[type=radio]:checked').val();

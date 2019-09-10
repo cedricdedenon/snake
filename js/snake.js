@@ -4,7 +4,7 @@
 	Description: créer le jeu 'snake' en Javascript avec jQuery
 	Author: Cédric Dedenon
 	Date de création: 24/11/2018
-	Version: 1.2.0
+	Version: 1.2.2
 */
 
 $(function(){
@@ -21,7 +21,7 @@ $(function(){
 	/* 
 	*	On teste si l'utilisateur a appuyé sur les touches (flêche du haut, flêche du bas, flêche de gauche, flêche de droite) ou (z, q, s, d)
 	*	on actualise alors l'objet 'snake_head' avec la direction souhaitée.
-	*	Par appui sur la touche 'Espace', le joueur met le jeu en pause (ou on relance la partie en cours alternativement)
+	*	Par appui sur la touche 'p', le joueur met le jeu en pause (ou on relance la partie en cours alternativement)
 	*	Par appui sur la touche 'n', le joueur lance une nouvelle partie
 	*	Par appui sur la touche 'o', le joueur ouvre le menu 'Options'
 	*	Par appui sur la touche 'b', le joueur ouvre le menu 'TOP 10 scores'
@@ -46,11 +46,12 @@ $(function(){
 				case 'ArrowRight':
 					snake_head ="RIGHT";
 					break;
-				case ' ':
+				case 'p':
 					pauseOrStartGame();	
 					break;	
 				case 'n': 
 					options();	
+					startGame();
 					break;
 				case 'o': 
 					openOptions(default_form);
@@ -65,11 +66,9 @@ $(function(){
 	/* 
 	*	Si on clique sur le bouton 'Rejouer', on récupére les données entrées par l'utilisateur (options) et on relance une nouvelle partie avec ces valeurs
 	*/
-	$("#new").on('click', function(e){
-		e.preventDefault();
-		clearInterval(animation_snake);
+	$("#new").on('click', function(){
 		options();
-		animation_snake = setInterval(function(){ managingContainer(wall); }, animation_time);
+		startGame();
 	});
 
 	/* 
@@ -104,8 +103,6 @@ $(function(){
 	$('form').on("submit", function(e){
 		keyboardOff = false;
 		e.preventDefault();
-		clearInterval(animation_snake);
-		clearInterval(time);
 		options();
 		startGame();
 		$('#section-form').css('display', 'none');
@@ -116,7 +113,7 @@ $(function(){
 	*   Ces données sont d'abord triées selon le score effectué, puis par le temps si le score est identique.
 	*	Enfin, on ajoute une ligne dans nos tableaux pour chaque score dans les 3 modes de jeu différents.
 	*/
- 	$('#bestscore').on('click', function(e){
+ 	$('#bestscore').on('click', function(){
 		initWindowRecord();
 	});
 
@@ -135,9 +132,9 @@ $(function(){
 	*	Lorsque l'on ferme la fenêtre des meilleurs scores, on réinitilise tous les paramètres par défaut et on relance la partie en cours
 	*/
  	$('#section-score .close').on('click', function(){
+		keyboardOff = false;
 		closeWindowRecord();
 		startGame();
-		keyboardOff = false;
 		$('#section-score .modal-content article').remove();
 	});
 
@@ -146,14 +143,16 @@ $(function(){
 	*	on enlève toutes les données présentes dans la variable globale "newRecord" et on quitte le menu
 	*/
  	$('#historique').on('click', function(e){
- 		e.preventDefault;
+		e.preventDefault;
+		keyboardOff = false;
  		if ( typeof localStorage != "undefined" && JSON) {
  			localStorage.removeItem("NewScore");
  			var length = newRecord.length;
  			for(var i=0; i < length; i++){
  				newRecord.pop();
  			}
- 			closeWindowRecord();
+			closeWindowRecord();
+			startGame();
  	 		$('article div').html('Il n\'y a aucun record actuellement dans ce mode de jeu');
  		}
  	});	

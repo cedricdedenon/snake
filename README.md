@@ -9,7 +9,7 @@ La partie se termine lorsque sa tête se heurte dans une partie de son corps (ou
 ## Raccourcis clavier
 
 Des racourcis clavier ont été rajoutés dans la nouvelle version
-* Touche 'Espace', pour mettre en pause la partie. Un second appui sur la touche 'Espace' relance la partie en cours
+* Touche 'p', pour mettre en pause la partie. Un second appui sur la touche 'p' relance la partie en cours
 * Touche 'n', pour lancer une nouvelle partie
 * Touche 'o', pour ouvrir le menu 'Options'
 * Touche 'b', pour ouvrir le menu 'Top 10 scores'
@@ -44,6 +44,8 @@ Les données sont stockées dans le WebStorage (ici localStorage).
 L'interface localStorage mémorise les données sans limite de durée de vie. Elles ne sont pas effacées lors de la fermeture d'un onglet ou du navigateur.
 
 Les données ne sont pas conservées d'un navigateur à l'autre.
+
+Si votre navigateur web ne supporte pas le localStorage, les scores ne pourront pas être sauvegardés.
 
 ### Suppression des données
 

@@ -1,5 +1,10 @@
 # RELEASE NOTES JEU "Snake"
 
+## Version 1.2.2 [10/09/2019]
+* Correction de bugs de l'algorithme liés aux raccourcis clavier et à leurs diverses utilisations. De nombreux tests ont été effectués.
+* Les tests sont tous concluants pour les navigateurs Chrome, Firefox et Edge
+* Changement pour mettre le jeu en pause. La touche à utiliser est maintenant la touche 'p'
+
 ## Version 1.2.1 [05/09/2019]
 * Correction de bugs de l'algorithme
 * Gestion de la compatibilité pour les navigateurs ne supportant pas le localStorage
