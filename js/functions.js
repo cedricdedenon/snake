@@ -201,11 +201,8 @@ function managingContainer(wall = false){
     //      Si true, la partie se termine et on relance une nouvelle partie
     if(testCollision(snake_x, snake_y) || testCollisionObstacles(snake_x, snake_y) || (wall && testCollisionWall(snake_x, snake_y))){
         writeLocalStorage();
-        var points = $('#score').html() > 1 ? 'points' : 'point';
-        alert('Vous avez perdu. \nVotre score est de ' + score + ' ' + points);	
-        clearInterval(animation_snake);
-        options();
-        animation_snake = setInterval(function(){ managingContainer(wall); }, animation_time);
+        stopGame();
+        windowEndGame();
     }else{
         //	3.	Gestion de la nouriture avalé par le serpent, si le serpent l'avale, une nouvelle nourriture est généré aléatoirement
         // 		On actualise le score, on stocke une nouvelle valeur (le serpent s'agrandit d'une unité) et on crée une nouvelle
@@ -315,13 +312,128 @@ function openOptions(numonglet = 'form-default'){
 }
 
 /**
+ * windowEndGame(): affiche une fenêtre modale avec le score et le temps effectué. 
+ *                  Une information (image) s'affiche si le joueur a effectué un nouveau record dans le mode choisi
+ * @return void
+ */
+function windowEndGame(){
+    var points = $('#score').html() > 1 ? 'points' : 'point';
+    var difficulty = $('#difficulty').val();
+    if(typeof difficulty === "undefined") difficulty='Personnalise';
+    if (storageAvailable('localStorage')) var scores=sortRecordByDifficulty(difficulty);
+
+    var thisGameScore = parseInt($('#score').html());
+    var thisGameTime = $('#time').html();
+
+    difficulty = difficulty.toUpperCase();
+    if(thisGameScore === 0) $('#endgame p').html(`Vous n'avez pas réussi à faire un seul point. DOMMAGE !`);
+    else{
+        $('#endgame p').html(`[${difficulty}]: Votre score est de ${thisGameScore} ${points} en ${thisGameTime}`);
+    
+        if(storageAvailable('localStorage')){
+            var scoring = parseInt(scores[0].scoring);
+
+            thisGamestring = thisGameTime.split(' ');
+            localStoragestring = scores[0].time.split(' ');
+
+            //On récupère le temps des secondes
+            thisGame_secondtime = parseInt(thisGamestring[0]);
+            localStorage_secondtime = parseInt(localStoragestring[0]);
+
+            // On calcule les temps en secondes pour les deux temps à comparer
+            if(thisGamestring.length === 4 && localStoragestring.length === 4){
+                thisGame_minutetime = parseInt(thisGamestring[0]);
+                thisGame_secondtime = (thisGame_minutetime*60) + parseInt(thisGamestring[2]);
+                localStorage_minutetime = parseInt(localStoragestring[0]);
+                localStorage_secondtime = (localStorage_minutetime*60) + parseInt(localStoragestring[2]);
+            } else if(thisGamestring.length === 2 && localStoragestring.length === 4){
+                localStorage_minutetime = parseInt(thisGamestring[0]);
+                localStorage_secondtime = (b_minutetime*60) + parseInt(localStoragestring[2]);
+            } else if(thisGamestring.length === 4 && localStoragestring.length === 2){
+                thisGame_minutetime = parseInt(thisGamestring[0]);
+                thisGame_secondtime = (thisGame_minutetime*60) + parseInt(thisGamestring[2]);
+            }
+
+            if((thisGameScore == scoring && thisGame_secondtime <= localStorage_secondtime) || thisGameScore > scoring)
+                $('#newrecord').append(`<img src="img/newrecord.png" alt="nouveau record png">`);
+        }
+    }
+    $('#endgame').css('display', 'block');
+}
+
+/**
+ * containerResponsive(): modifie les dimensions du conteneur de jeu en fonction du périphérique 
+ * @param String - difficulty (le mode de difficulté - par défaut 'Normal')
+ * @return void
+ */
+function containerResponsive(difficulty = 'Normal'){
+    var window_width = $(window).width();
+    var window_height= Math.round($(window).height() - $("#section-game").offset().top);
+    var container_width, container_height;
+    
+    switch (difficulty) {
+        case 'Expert':
+            if(window_width > window_height){
+                container_width = Math.floor(window_width * 0.1);
+                container_height = Math.floor(window_height * 0.1);
+            }
+            else{
+                container_width = Math.floor(window_height * 0.2);
+                container_height = Math.floor(window_width * 0.2);
+            }
+            break; 
+        case 'Normal':
+            if(window_width > window_height){
+                container_width = Math.floor(window_width * 0.3);
+                container_height = Math.floor(window_height * 0.3);
+            }
+            else{
+                container_width = Math.floor(window_height * 0.3);
+                container_height = Math.floor(window_width * 0.3);
+            }
+            break;
+        case 'Facile':
+            if(window_width > window_height){
+                container_width = Math.floor(window_width * 0.6);
+                container_height = Math.floor(window_height * 0.6);
+            }
+            else{
+                container_width = Math.floor(window_width * 0.6);
+                container_height = Math.floor(window_height * 0.6);
+            }
+            break;
+        case 'Personnalise':
+            var grid_perso_width = $('#grid_width').val();
+            var grid_perso_height = $('#grid_height').val();
+            container_width = Math.floor(window_width * (grid_perso_width/100));
+            container_height = Math.floor(window_height * (grid_perso_height/100));
+            break;
+    }
+
+    do{
+        if(container_width%20 != 0) container_width+=1;
+        if(container_height%20 != 0) container_height+=1;
+    }while(container_width%20 != 0 || container_height%20 != 0);
+
+    $('#container').css('width',container_width).css('height',container_height);
+}
+
+/**
+ * stopGame(): arrête le jeu (animation du serpent et le temps)
+ * @return void
+ */
+function stopGame(){
+    clearInterval(animation_snake);
+    clearInterval(time);
+}
+
+/**
  * options(): permet la gestion des paramètres optionnels (taille de la grille, vitesse de l'animation, insertion d'obstacles, couleurs ...)
  * @return void
  */
 function options(){
-    clearInterval(animation_snake);
-    clearInterval(time);
-    
+    stopGame();
+
     var minObstacles = 0, maxObstacles = 0;
     var grid_default = $('#difficulty').val();
     var obstacles = $('input[type=radio]:checked').val();
@@ -330,27 +442,22 @@ function options(){
     // Gestion de la taille de la grille (mode standard)
     switch(grid_default){
         case 'Expert': 
-            $('#container').css('width','200px').css('height','100px');
-            $('body').css('min-width', '250px');
+            containerResponsive('Expert');
             if(obstacles === "yes"){ minObstacles = 1; maxObstacles = 2; }
             break;
         case 'Normal': 
-            $('#container').css('width','400px').css('height','200px');
-            $('body').css('min-width', '450px');
+            containerResponsive('Normal');
             if(obstacles === "yes"){ minObstacles = 3, maxObstacles = 5; }
             break;
         case 'Facile': 
-            $('#container').css('width','500px').css('height','300px');
-            $('body').css('min-width', '550px');
+            containerResponsive('Facile');
             if(obstacles === "yes"){ minObstacles = 5, maxObstacles = 10; }
             break; 
     }
 
     // Gestion de la taille de la grille  (mode personnalisé) + nombre d'obstacles + mur
-    var grid_perso_width = $('#grid_width').val();
-    var grid_perso_height = $('#grid_height').val();
-    $('#container').css('width', grid_perso_width + 'px').css('height', grid_perso_height + 'px');
-    $('body').css('min-width', parseInt(grid_perso_width)+50 + 'px');
+    if(grid_default == undefined) containerResponsive('Personnalise');
+
     var nb_obstacles = 0;
     if($(':radio[name="obstacles"]:checked').val() === 'yes') nb_obstacles = $('#nb_obstacles').val();
     if($(':radio[name="wall"]:checked').val() === 'no'){ wall = true; } else { wall=false;}
@@ -401,8 +508,7 @@ function pauseOrStartGame(){
  */
 function pauseGame(){
     isPause = true;
-    clearInterval(animation_snake);
-    clearInterval(time);
+    stopGame();
 }
 
 /**
@@ -507,8 +613,8 @@ function createPersonalParameterForm(){
                 <legend>Niveau de difficulté</legend>
                 <div>
                     <label for="grid_width">Taille de la grille :</label>
-                    <input type="number" id="grid_width" autocomplete="off" placeholder="longueur" min="100" max="1000" step="20" value="400"> X
-                    <input type="number" id="grid_height" autocomplete="off" placeholder="largeur" min="100" max="500" step="20" value="200"> px
+                    <input type="number" id="grid_width" autocomplete="off" placeholder="longueur" min="10" max="90" step="5" value="50"> X
+                    <input type="number" id="grid_height" autocomplete="off" placeholder="largeur" min="10" max="90" step="5" value="50"> %
                 </div>
                 <div>
                     <label>Traverser les murs ?</label>
@@ -534,18 +640,24 @@ function createPersonalParameterForm(){
 function createColorForm(){
     return `<fieldset>
                 <legend>Couleurs</legend>
-                <div>
-                    <label for="snake_color">Serpent:</label>
-                    <select id="snake_color" autocomplete="off">
-                    </select>
-
-                    <label for="food_color">Nourriture:</label>
-                    <select id="food_color" autocomplete="off">
-                    </select>	
-
-                    <label for="obstacles_color"> Obstacles:</label>
-                    <select id="obstacles_color" autocomplete="off">
-                    </select>
+                <div id="form-all-color">
+                    <span>
+                        <label for="snake_color">Serpent:</label>
+                        <select id="snake_color" autocomplete="off">
+                        </select>
+                    </span>
+                    
+                    <span>
+                        <label for="food_color">Nourriture:</label>
+                        <select id="food_color" autocomplete="off">
+                        </select>	
+                    </span>
+                    
+                    <span>
+                        <label for="obstacles_color"> Obstacles:</label>
+                        <select id="obstacles_color" autocomplete="off">
+                        </select>
+                    </span>
                 </div>	
             </fieldset>`;
 }
@@ -611,10 +723,10 @@ function createArticleRecord(numonglet = 'Normal'){
                         <tr>
                             <th>Score</th>
                             <th>Temps</th>
+                            <th>Grille</th>
                             <th>Obstacles</th>`	
                             if(numonglet === 'Personnalise'){
-                                newArticle +=`<th>Grille</th>
-                                <th>Murs</th>`
+                                newArticle +=` <th>Murs</th>`
                             }
                             newArticle += `</tr>
                     </thead>
@@ -626,13 +738,44 @@ function createArticleRecord(numonglet = 'Normal'){
 }
 
 /**
+ * storageAvailable(): détecter que localStorage est supporté mais aussi disponible
+ *              https://developer.mozilla.org/fr/docs/Web/API/Web_Storage_API/Using_the_Web_Storage_API
+ * @param String - type (le local storage)
+ * @return Boolean or Exception
+ */
+function storageAvailable(type) {
+    try {
+        var storage = window[type],
+            x = '__storage_test__';
+        storage.setItem(x, x);
+        storage.removeItem(x);
+        return true;
+    }
+    catch(e) {
+        return e instanceof DOMException && (
+            // everything except Firefox
+            e.code === 22 ||
+            // Firefox
+            e.code === 1014 ||
+            // test name field too, because code might not be present
+            // everything except Firefox
+            e.name === 'QuotaExceededError' ||
+            // Firefox
+            e.name === 'NS_ERROR_DOM_QUOTA_REACHED') &&
+            // acknowledge QuotaExceededError only if there's something already stored
+            storage.length !== 0;
+    }
+}
+
+
+/**
  * initWindowRecord(): crée les articles, initialise les variables lorsque le menu 'TOP 10 scores' est sélectionné (met en pause le jeu et affiche les records du niveau 'Normal')
  * @return void
  */
 function initWindowRecord(){
     keyboardOff = true;
     pauseGame();
-    if ( typeof localStorage != "undefined" && JSON){
+    if (storageAvailable('localStorage')) {
         var articles = ['Expert', 'Normal', 'Facile', 'Personnalise'];
         articles.forEach(function(value){
             var article = createArticleRecord(value);
@@ -659,7 +802,7 @@ function initWindowRecord(){
 function closeWindowRecord()
 {
     $('#section-score').css('display', 'none');
-    if ( typeof localStorage != "undefined" && JSON) {
+    if (storageAvailable('localStorage')) {
         $('#section-score .onglets li').removeClass("actif");
         $('li[data-click="Normal"]').addClass('actif');
         $('table').css('display', 'none');
@@ -672,19 +815,79 @@ function closeWindowRecord()
  * @return void
  */
 function writeLocalStorage(){
-    if ( typeof localStorage != "undefined" && JSON) {
-        newRecord.push({
-            grid : $('#difficulty').val(),
-            time : $('#time').html(),
-            scoring :  $('#score').html(),
-            obstacles: $('input[name=obstacles]:checked').val(),
-            grid_length: $('#grid_width').val(),
-            grid_height: $('#grid_height').val(),
-            nb_obstacles: $('#nb_obstacles').val(),
-            wall: $('input[name=wall]:checked').val(),
-        });
-        localStorage.setItem("NewScore", JSON.stringify(newRecord));
+    if (storageAvailable('localStorage')) {
+        if($('#score').html() > 0){
+            var difficulty = $('#difficulty').val();
+            if(typeof difficulty === "undefined") difficulty='Personnalise';
+            newRecord.push({
+                grid : difficulty,
+                time : $('#time').html(),
+                scoring :  $('#score').html(),
+                obstacles: $('input[name=obstacles]:checked').val(),
+                grid_length: $('#container').width(),
+                grid_height: $('#container').height(),
+                nb_obstacles: $('#nb_obstacles').val(),
+                wall: $('input[name=wall]:checked').val(),
+            });
+            localStorage.setItem("NewScore", JSON.stringify(newRecord));
+        }
     }
+}
+
+/**
+ * sortRecordByDifficulty():  on récupère les données 'en localStorage', on les trient en fonction du mode de difficulté 
+ * @param String - grid (le mode de difficulté - par défaut 'Normal')
+ * @return Array - le tableau trié
+ */
+function sortRecordByDifficulty(grid = 'Normal'){
+    if (storageAvailable('localStorage')) {
+        var allScores = JSON.parse(localStorage.getItem("NewScore"));
+        var scores = [];
+
+        if(allScores === null) return -1;
+        allScores.forEach(function(value){
+            if(value.grid === grid) scores.push(value);
+        });
+        if(scores != null) return sortRecord(scores);
+    }
+}
+
+/**
+ * sortRecord():  trie le tableau des scores, en fonction du score puis du temps effectué (tous niveaux de difficulté) 
+ * @param Array - scores (le tableau à trier)
+ * @return Array - le tableau trié
+ */
+function sortRecord(scores){
+    // On trie les données, en fonction du score, puis en fonction du temps si le score est identique
+    scores.sort(function(a,b){
+        // On récupère les temps dans les tableaux
+        astring = a.time.split(' ');
+        bstring = b.time.split(' ');
+
+        //On récupère le temps des secondes
+        a_secondtime = parseInt(astring[0]);
+        b_secondtime = parseInt(bstring[0]);
+
+        // On calcule les temps en secondes pour les deux temps à comparer
+        if(astring.length === 4 && bstring.length === 4){
+            a_minutetime = parseInt(astring[0]);
+            a_secondtime = (a_minutetime*60) + parseInt(astring[2]);
+            b_minutetime = parseInt(bstring[0]);
+            b_secondtime = (b_minutetime*60) + parseInt(bstring[2]);
+        } else if(astring.length === 2 && bstring.length === 4){
+            b_minutetime = parseInt(astring[0]);
+            b_secondtime = (b_minutetime*60) + parseInt(bstring[2]);
+        } else if(astring.length === 4 && bstring.length === 2){
+            a_minutetime = parseInt(astring[0]);
+            a_secondtime = (a_minutetime*60) + parseInt(astring[2]);
+        }
+        return b_secondtime - a_secondtime;
+    });
+
+    scores.sort(function(a,b){
+        return a.scoring - b.scoring;
+    });
+    return scores.reverse();
 }
 
 /**
@@ -692,42 +895,14 @@ function writeLocalStorage(){
  * @return void
  */
 function writeRecord(){
-    if ( typeof localStorage != "undefined" && JSON) {
+    if (storageAvailable('localStorage')) {
         // On récupère les données stockées dans le localStorage
         var scores = JSON.parse(localStorage.getItem("NewScore"));
         $('#section-score').css('display', 'block');
+        
         if(scores != null){
-            // On trie les données, en fonction du score, puis en fonction du temps si le score est identique
-            scores.sort(function(a,b){
-                // On récupère les temps dans les tableaux
-                astring = a.time.split(' ');
-                bstring = b.time.split(' ');
-
-                //On récupère le temps des secondes
-                a_secondtime = parseInt(astring[0]);
-                b_secondtime = parseInt(bstring[0]);
-
-                // On calcule les temps en secondes pour les deux temps à comparer
-                if(astring.length === 4 && bstring.length === 4){
-                    a_minutetime = parseInt(astring[0]);
-                    a_secondtime = (a_minutetime*60) + parseInt(astring[2]);
-                    b_minutetime = parseInt(bstring[0]);
-                    b_secondtime = (b_minutetime*60) + parseInt(bstring[2]);
-                } else if(astring.length === 2 && bstring.length === 4){
-                    b_minutetime = parseInt(astring[0]);
-                    b_secondtime = (b_minutetime*60) + parseInt(bstring[2]);
-                } else if(astring.length === 4 && bstring.length === 2){
-                    a_minutetime = parseInt(astring[0]);
-                    a_secondtime = (a_minutetime*60) + parseInt(astring[2]);
-                }
-                return b_secondtime - a_secondtime;
-            });
-
-            scores.sort(function(a,b){
-                return a.scoring - b.scoring;
-            });
-            scores.reverse();
-
+            scores = sortRecord(scores);
+            
             // On ajoute les lignes dans les tableaux
             for(var i=0; i<scores.length; i++)
             {	
@@ -758,16 +933,16 @@ function createLineTableRecord(scores = null){
     var points = scoring > 1 ? 'points' : 'point';
     if(nblines.length < 10){	
         var newline = '<tr><td>' +  scoring + ' ' + points + '</td><td>' + time + '</td><td>';
+        newline += grid_length + ' x ' + grid_height + ' px</td><td>';
         if(obstacles === "yes") newline += '<span style="color:green; font-weight: bold;">&check;</span>';
         else newline += '<span style="color:red; font-weight: bold;">&cross;</span>';
 
         if(grid === "Personnalise"){
             if(obstacles === "yes"){
-                newline += '  (' + nb_obstacles + ')</td>';
+                newline += '  (' + nb_obstacles + ') ';
             }
-            newline += '<td>' + grid_length + ' x ' + grid_height + ' px</td><td>';
-            if(wall === "no") newline += '<span style="color:green; font-weight: bold;">&check;<span>';
-            else newline += '<span style="color:red; font-weight: bold;">&cross;<span>';
+            if(wall === "no") newline += '<td><span style="color:green; font-weight: bold;">&check;<span>';
+            else newline += '<td><span style="color:red; font-weight: bold;">&cross;<span>';
         }
         newline += '</td></tr>';
         $('table#scores_' +  grid).css('display', 'table');

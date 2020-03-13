@@ -29,3 +29,6 @@ var newRecord = [];                         // Stocke tous les records disponibl
 
 var isPause = false;                        // Permet de savoir si le jeu est en pause (true) ou non (false par défaut)
 var keyboardOff = false;                    // Désactive les touches clavier (true) ou non (false par défaut)
+
+var startx = 0;                             // Gestion du tactile: enregistre la coordonnée en x
+var starty = 0;                             // Gestion du tactile: enregistre la coordonnée en y

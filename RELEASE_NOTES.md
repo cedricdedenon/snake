@@ -1,5 +1,13 @@
 # RELEASE NOTES JEU "Snake"
 
+## Version 1.3.0 [12/03/2020]
+* Le jeu est entièrement responsive. La taille de la grille de jeu dépend de la taille du périphérique utilisé. 
+Pour le mode 'personnalisé', le joueur choisi la taille de la grille en pourcentage en non plus en pixel.
+* Le jeu est utilisable pour les appareils tactiles (Smartphone, tablette ...)
+* Création de la fenêtre de fin de partie avec toutes les informations de la partie ecoulée. Si le joueur a effectué un nouveau record, un message sera affiché.
+* Correction de la compatibilité du localStorage pour le navigateur Edge
+* Si le joueur ne fait aucun point, le record ne sera pas enregistré
+
 ## Version 1.2.2 [10/09/2019]
 * Correction de bugs de l'algorithme liés aux raccourcis clavier et à leurs diverses utilisations. De nombreux tests ont été effectués.
 * Les tests sont tous concluants pour les navigateurs Chrome, Firefox et Edge

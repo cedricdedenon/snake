@@ -12,16 +12,20 @@
 	<header>
 		<img src="img/snake.png" alt="image de serpent">
 		<h1>Snake</h1>
-		<small>&copy; 2018 - Tous droits réservés </small>
+		<small>&copy; 2018-2020 | Tous droits réservés </small>
 	</header>
 	<main>
 		<!-- SECTION INFORMATION (affiche le temps, le score et les boutons) -->
 		<section id="section-infos">
-			<p><strong>SCORE: </strong><span id="score">0</span> <span id="points">pt</span></p>
-			<p><strong>TEMPS: </strong><span id="time">0</span></p>
-			<button id="bestscore">TOP 10 scores</button>
-			<button id="options">Options</button>
-			<button id="new">Rejouer</button>
+			<div id="infos-score">
+				<p><strong>SCORE: </strong><span id="score">0</span> <span id="points">pt</span></p>
+				<p><strong>TEMPS: </strong><span id="time">0</span></p>
+			</div>
+			<div id="infos-button">
+				<button id="bestscore">TOP 10</button>
+				<button id="options">Options</button>
+				<button id="new">Rejouer</button>
+			</div>
 		</section>
 		
 		<!-- SECTION MENU 'TOP 10' (affiche les 10 meilleurs scores de chaque niveau de difficulté) -->
@@ -65,6 +69,21 @@
 				<div id="snake_head"></div>
 			</div>
 		</section>
+
+		<!-- SECTION FIN DE PARTIE -->
+		<section id="endgame">
+			<div class="modal-content">
+				<h2>Fin de partie </h2>
+				<div id="endgamewindow">
+					<div id="endgameinfo">
+						<p></p>
+						<button id="newgame" title="Jouer une nouvelle partie"> Rejouer</button>
+					</div>
+					<div id="newrecord"></div>
+				</div>
+			</div>
+		</section>
+
 	</main>
 
   	<script src="https://code.jquery.com/jquery-3.3.1.min.js" integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8="       crossorigin="anonymous"> </script>

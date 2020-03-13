@@ -12,6 +12,7 @@ $(function(){
 	*  Gestion générale du jeu 
 	***************************/
 	initForm();		// On crée le formulaire 'Standard' de manière dynamique
+	containerResponsive('Normal');
 	init();			// On initialise les variables nécéssaires
 	startGame();	// On démarre le jeu
 
@@ -64,9 +65,35 @@ $(function(){
 	});
 
 	/* 
+	*	TACTILE: on enregistre les coordonnées lorsque le joueur utilise son doigt sur l'écran
+	*/
+	$('#section-game').on('touchstart',function(e){
+		e.preventDefault();
+		startx = parseInt(e.touches[0].clientX);
+		starty = parseInt(e.touches[0].clientY);
+	});
+
+	/* 
+	*	TACTILE: on enregistre les coordonnées lorsque le joueur déplace son doigt sur l'écran
+	*	On compare ces coordonnées avec les coordonnées initiales pour la gestion de la direction de la tête de serpent 
+	*/
+	$('#section-game').on('touchmove',function(e){
+		e.preventDefault();
+		var distx = parseInt(e.touches[0].clientX) - startx;
+		var disty = parseInt(e.touches[0].clientY) - starty;
+
+		if(distx >= 0 && Math.abs(distx) > Math.abs(disty)) snake_head ="RIGHT";
+		if(distx < 0 && Math.abs(distx) > Math.abs(disty)) snake_head ="LEFT";
+		if(disty >= 0 && Math.abs(disty) > Math.abs(distx)) snake_head ="TOP";
+		if(distx < 0 && Math.abs(disty) > Math.abs(distx)) snake_head ="BOTTOM";
+	});
+
+	/* 
 	*	Si on clique sur le bouton 'Rejouer', on récupére les données entrées par l'utilisateur (options) et on relance une nouvelle partie avec ces valeurs
 	*/
-	$("#new").on('click', function(){
+	$("#new, #newgame").on('click', function(){
+		$('#endgame').css('display', 'none');
+		$('#newrecord img').remove();
 		options();
 		startGame();
 	});

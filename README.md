@@ -1,18 +1,26 @@
 # Snake
 
-Le célébre jeu du "snake" reproduit en Javascript (avec jQuery) pour **Ordinateur**
+Le célébre jeu du "snake" reproduit en Javascript (avec jQuery)
 
 Le but est d'obtenir le meilleur score possible, pour cela, le serpent doit avaler de la nourriture et à chaque fois qu'il mange, il grandit. 
-Pour déplacer le serpent, utiliser soit les flêches directionnelles (haut, bas, gauche, droite), soit les touches 'z', 'q', 's', 'd'.
 La partie se termine lorsque sa tête se heurte dans une partie de son corps (ou lorsqu'il rencontre un obstacle ou s'il percute le mur extérieur).
 
-## Raccourcis clavier
+## Version pour Ordinateur
 
-Des racourcis clavier ont été rajoutés dans la nouvelle version
+Pour déplacer le serpent, utiliser soit les flêches directionnelles (haut, bas, gauche, droite), soit les touches 'z', 'q', 's', 'd'.
+
+### Raccourcis clavier
+
+Des racourcis clavier ont été rajoutés à partir de la version 1.2
 * Touche 'p', pour mettre en pause la partie. Un second appui sur la touche 'p' relance la partie en cours
 * Touche 'n', pour lancer une nouvelle partie
 * Touche 'o', pour ouvrir le menu 'Options'
 * Touche 'b', pour ouvrir le menu 'Top 10 scores'
+
+## Version pour appareils tactiles
+
+Depuis la version 1.3.0, le jeu est disponible pour les appareils tactiles comme les smartphones et les tablettes.
+Pour déplacer le serpent, il suffit d'effectuer le geste dans la direction souhaitée. Par exemple, si le joueur déplace son doigt de gauche à droite sur l'écran, le serpent se déplacera vers la droite. 
 
 ## Options
 
@@ -46,6 +54,8 @@ L'interface localStorage mémorise les données sans limite de durée de vie. El
 Les données ne sont pas conservées d'un navigateur à l'autre.
 
 Si votre navigateur web ne supporte pas le localStorage, les scores ne pourront pas être sauvegardés.
+
+Si le joueur ne fait pas de score, il ne sera pas sauvegardé.
 
 ### Suppression des données
 
