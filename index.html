@@ -9,17 +9,37 @@
 	<link rel="icon" type="image/png" href="img/snake.png" />
 </head>
 <body>
+	<!-- HEADER -->
 	<header>
 		<img src="img/snake.png" alt="image de serpent">
 		<h1>Snake</h1>
 		<small>&copy; 2018-2020 | Tous droits réservés </small>
 	</header>
+
+	<!-- MAIN -->
 	<main>
-		<!-- SECTION INFORMATION (affiche le temps, le score et les boutons) -->
+		<!-- SECTION FOR DISPLAYING MAIN INFORMATIONS (SCORE, TIME ...)-->
 		<section id="section-infos">
 			<div id="infos-score">
-				<p><strong>SCORE: </strong><span id="score">0</span> <span id="points">pt</span></p>
-				<p><strong>TEMPS: </strong><span id="time">0</span></p>
+				<div class="counter">
+					<div class="infos-name">score</div>
+					<span id="score">00</span>
+					<div class="smalltext">points</div>
+				</div>
+				<div id="infos-border"></div>
+				<div class="counter">
+					<div class="infos-name">Temps</div>
+					<div style="display: flex">
+						<div class="time-block">
+							<span id="minutes">00</span>
+							<div class="smalltext">minutes</div>
+						</div>:
+						<div  class="time-block">
+							<span id="seconds">00</span>
+							<div class="smalltext">secondes</div>
+						</div>
+					</div>
+				</div>
 			</div>
 			<div id="infos-button">
 				<button id="bestscore">TOP 10</button>
@@ -27,50 +47,218 @@
 				<button id="new">Rejouer</button>
 			</div>
 		</section>
-		
-		<!-- SECTION MENU 'TOP 10' (affiche les 10 meilleurs scores de chaque niveau de difficulté) -->
-		<section id="section-score">
-			<div class="modal-content">
-				<div class="onglets">
-					<ul>
-						<li data-click="Expert" class="">Expert</li>
-						<li data-click="Normal" class="actif">Normal</li>
-						<li data-click="Facile" class="">Facile</li>
-						<li data-click="Personnalise" class="">Personnalisé</li>
-						<button id="historique" title="Supprimer tous les records"> Supprimer l'historique</button>
-						<span class="close">&times;</span>
-					</ul>
-				</div>
-			</div>
-		</section>
 
-		<!-- SECTION MENU 'Options' -->
-		<section id="section-form">
-			<div class="modal-content">
-				<div class="onglets">
-					<ul>
-						<li data-click="form-default" class="">Standard</li>
-						<li data-click="form-perso" class="">Personnalisé</li>
-					</ul>
-				</div>
-				<div id="form-default">
-					<form method="POST"></form>
-				</div>
-				<div id="form-perso">
-					<form method="POST"></form>
-				</div>
-			</div>
-		</section>
-
-		<!-- SECTION GRILLE DU JEU -->
+		<!-- MAIN SECTION OF THE GAME  -->
 		<section id="section-game">
 			<div id="container">
 				<div id="food"></div>
+				<div id="food-special"></div>
 				<div id="snake_head"></div>
 			</div>
 		</section>
 
-		<!-- SECTION FIN DE PARTIE -->
+		<!-- SECTION FOR THE OPTION MENU -->
+		<section id="section-form">
+			<div class="modal-content">
+				<div class="onglets">
+					<ul>
+						<li data-click="default-form" class="">Standard</li>
+						<li data-click="custom-form" class="">Personnalisé</li>
+					</ul>
+				</div>
+				
+				<form method="POST">
+					<div id="content">
+						<fieldset>
+			                <legend>Niveau de difficulté</legend>
+			                <div class="default-form" style="display: flex;">
+			                    <label for="difficulty" title="Choisir un niveau de diffculté standard">Niveau :</label>
+			                    <select id="difficulty" autocomplete="off">
+			                        <option value="expert">Expert</option>
+			                        <option value="normal" selected>Normal</option>
+			                        <option value="easy">Facile</option>
+			                    </select>
+			                </div>
+
+			                <div class="custom-form" style="display: none;">
+			                    <label for="grid_width" title="Modifier la taille de la grille en porcentage en fonction de votre périphérique">Taille de la grille :</label>
+				                    <input type="number" id="grid_width" min="10" max="90" step="5" value="50" autocomplete="off">x
+				                    <input type="number" id="grid_height" min="10" max="90" step="5" value="50" autocomplete="off">%
+				    		</div>
+
+			                <div style="display: flex;">
+			                    <label title="Une nourriture spéciale apparait toutes les 20 secondes et permet d'obtenir 3 points">Ajouter la nourriture spéciale ?</label>
+			                    <input type="radio" name="special-food" value="true" autocomplete="off">Oui
+			                    <input type="radio" name="special-food" value="false" checked="false" autocomplete="off">Non
+			                </div>
+
+		                   <div class="custom-form" style="display: none;">
+			                    	<label title="Ajouter des murs aux extrémités de la grille">Ajouter des murs ?</label>
+			                    	<input type="radio" name="wall" value="true" autocomplete="off">Oui
+			                    	<input type="radio" name="wall" value="false" checked="false" autocomplete="off">Non
+			                </div>	
+
+			                <div id="obstacles-form" style="display: flex;">
+			                    <label title="Ajouter des obstacles générés aléatoirement sur la grille">Ajouter des obstacles ?</label>
+			                    <input type="radio" name="obstacles" value="true" autocomplete="off">Oui
+			                    <input type="radio" name="obstacles" value="false" checked="false" autocomplete="off">Non
+			                </div>
+
+			                <div class="custom-form" style="display: none;">
+			                    <label for="nb_obstacles" title="Définir le nombre d'obstacles à ajouter">Nombre d'obstacles : </label>
+			                    <input type="number" id="nb_obstacles" name="nb_obstacles" min="1" max="50" value="5" autocomplete="off" disabled>
+			                </div>
+			            </fieldset>
+
+			            <fieldset>
+			                <legend>Vitesse du serpent</legend>
+			                <div style="display: flex;">
+								<span>rapide ++</span>
+			                    <input type="range" name="animation_time" min="20" max="150" value="90" id="animation_time" autocomplete="off">
+			                    <span>++ lent</span>
+			                </div>
+			            </fieldset>
+					</div>	
+
+					<div id="content-color">
+			            <fieldset>
+			                <legend>Couleurs</legend>
+			                <div id="form-all-color" style="display: flex;">
+		                     	<span>
+		                     		<label for="head_color"> Tête:</label>
+			                        <input type="color" name="head_color" value="#808080" id="head_color" autocomplete="off">
+			                    </span>
+
+			                    <span>
+			                    	<label for="snake_color">Corps:</label>
+			                        <input type="color" name="snake_color" value="#000000" id="snake_color" autocomplete="off">
+			                    </span>
+
+			                    <span>
+			                        <label for="food_color">Nourriture:</label>
+			                        <input type="color" name="food_color" value="#FF0000" id="food_color" autocomplete="off">
+			                   	</span>
+			                   
+			                    <span>
+			                        <label for="obstacles_color"> Obstacles:</label>
+			                        <input type="color" name="obstacles_color" value="#0000FF" id="obstacles_color" autocomplete="off">
+			                   	</span>
+
+		                      	<span>
+		                      		<label for="theme_color"> Thème:</label>
+			                        <input type="color" name="theme_color" value="#FFFFFF" id="theme_color" autocomplete="off">
+			                    </span>
+
+		                      	<span>
+			                        <label for="grid_color"> Grille:</label>
+			                        <input type="color" name="grid_color" value="#FFFFFF" id="grid_color" autocomplete="off">
+			                   	</span>
+			                </div>	
+			            </fieldset>
+					</div>
+
+					<div id="form-button">
+			            <div id="form-submit">
+	                		<button type="submit" title="Enregistrer les modifications et quitter">Enregistrer</button>
+	            		</div>
+
+	    		       	<div id="form-reset">
+	                		<button type="reset" title="Reintialiser les paramètres par défaut">Réinitialiser</button>
+	            		</div>
+            		</div>
+				</form>							
+			</div>
+		</section>
+		
+		<!-- SECTION FOR DISPLAYING BEST SCORES DONE -->
+		<section id="section-score">
+			<div class="modal-content">
+				<div class="onglets">
+					<ul>
+						<li data-click="expert" class="">Expert</li>
+						<li data-click="normal" class="actif">Normal</li>
+						<li data-click="easy" class="">Facile</li>
+						<li data-click="custom" class="">Personnalisé</li>
+						<span class="close">&times;</span>
+					</ul>
+				</div>
+
+				<article id="expert">
+	                <h2>TOP 10: Expert
+						<button class="historique" title="Supprimer tous les scores"> Supprimer l'historique</button>
+					</h2>
+					<div>Il n'y a aucun record actuellement dans ce mode de jeu</div>
+	                <table id="scores_expert">
+	                    <thead>
+	                        <tr>
+	                            <th>Score</th>
+	                            <th>Temps</th>
+	                            <th>Grille</th>
+	                            <th>Obstacles</th>
+							</tr>	
+	                    </thead>
+	                    <tbody></tbody>
+            		</table>             
+	            </article>
+
+            	<article id="normal">
+	                <h2>TOP 10: Normal
+	                	<button class="historique" title="Supprimer tous les scores"> Supprimer l'historique</button>
+	                </h2>
+	                <div>Il n'y a aucun record actuellement dans ce mode de jeu</div>
+	                <table id="scores_normal">
+	                    <thead>
+	                        <tr>
+	                            <th>Score</th>
+	                            <th>Temps</th>
+	                            <th>Grille</th>
+	                            <th>Obstacles</th>
+	                        </tr>	
+	                    </thead>
+	                    <tbody></tbody>
+            		</table>                        
+	            </article>
+
+            	<article id="easy">
+	                <h2>TOP 10: Facile
+	                	<button class="historique" title="Supprimer tous les scores"> Supprimer l'historique</button>
+	                </h2>
+	                <div>Il n'y a aucun record actuellement dans ce mode de jeu</div>   
+	                <table id="scores_easy">
+	                    <thead>
+	                        <tr>
+	                            <th>Score</th>
+	                            <th>Temps</th>
+	                            <th>Grille</th>
+	                            <th>Obstacles</th>
+	                        </tr>	
+	                    </thead>
+	                    <tbody></tbody>
+            		</table>                     
+	            </article>
+
+            	<article id="custom">
+	                <h2>TOP 10: Personnalisé
+	                	<button class="historique" title="Supprimer tous les scores"> Supprimer l'historique</button>
+	                </h2>
+	                <div>Il n'y a aucun record actuellement dans ce mode de jeu</div> 
+	                <table id="scores_custom">
+	                    <thead>
+	                        <tr>
+	                            <th>Score</th>
+	                            <th>Temps</th>
+	                            <th>Grille</th>
+	                            <th>Obstacles</th>
+	                            <th>Murs</th>
+	                        </tr>
+	                    </thead>
+	                    <tbody></tbody>
+            		</table>               
+	            </article>
+			</div>
+		</section>
+		
+		<!-- SECTION FOR DISPLAYING THE END GAME WINDOW -->
 		<section id="endgame">
 			<div class="modal-content">
 				<h2>Fin de partie </h2>
@@ -79,16 +267,24 @@
 						<p></p>
 						<button id="newgame" title="Jouer une nouvelle partie"> Rejouer</button>
 					</div>
-					<div id="newrecord"></div>
+					<div id="newrecord">
+						<img src="img/newrecord.png" alt="nouveau record png" style="display: none;">
+					</div>
 				</div>
 			</div>
 		</section>
-
 	</main>
 
-  	<script src="https://code.jquery.com/jquery-3.3.1.min.js" integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8="       crossorigin="anonymous"> </script>
-	<script type="text/javascript" src="js/variables.js"></script>
-	<script type="text/javascript" src="js/functions.js"></script>
-	<script type="text/javascript" src="js/snake.js"></script>
+	<!-- JAVASCRIPT FILES -->
+ 	<script src="js/class/Grid.js"></script>
+	<script src="js/class/Snake.js"></script>
+	<script src="js/class/Food.js"></script>
+	<script src="js/class/FoodSpecial.js"></script>
+	<script src="js/class/Obstacle.js"></script>
+	<script src="js/class/Form.js"></script>
+	<script src="js/class/Scores.js"></script>
+	<script src="js/class/EndWindow.js"></script>
+	<script src="js/class/Game.js"></script>
+	<script src="js/main.js"></script> 
 </body>
 </html>

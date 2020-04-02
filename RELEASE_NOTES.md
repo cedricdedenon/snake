@@ -1,5 +1,22 @@
 # RELEASE NOTES JEU "Snake"
 
+## Version 2.0.0 [02/04/2020]
+* Restructuration complète du code
+	* utilisation de la programmation orientée objet (au lieu de la programmation structurelle)
+	* utilisation du JavaScript ES6+
+	* abandon du jQuery
+* Abandon du localStorage: les 10 meilleurs scores seront sauvegardés quelque soit le navigateur
+* Redesign du CSS
+	* Affichage du score et du temps
+	* Dans le menu 'option', changements majeurs de disposition des formulaires
+	* Dans le menu 'TOP 10', déplacement du bouton 'Supprimer l'historique'
+* Ajout de fonctionnalités
+	* Une nouvelle nourriture peut être générée toutes les 20 secondes et placée aléatoirement sur la grille, cette nourriture spéciale rapporte 3 points.
+	* Les couleurs de la tête du serpent, de la grille et du thème général de la page HTML peuvent être modifiés
+	* Le choix des couleurs sont infinis (au lieu de 16 couleurs précédemment)
+	* Plus de choix possibles pour la vitesse du serpent. Utilisation d'un slider au lieu d'un menu déroulant
+	* Ajout d'un bouton 'reinitialiser' pour remettre tous les paramètres initialisés par défaut 
+
 ## Version 1.3.0 [12/03/2020]
 * Le jeu est entièrement responsive. La taille de la grille de jeu dépend de la taille du périphérique utilisé. 
 Pour le mode 'personnalisé', le joueur choisi la taille de la grille en pourcentage en non plus en pixel.

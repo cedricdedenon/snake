@@ -1,4 +1,12 @@
 /* ********************************************
+					GLOBAL
+**********************************************/
+body{
+	margin: 0;
+}
+
+
+/* ********************************************
 					HEADER
 **********************************************/
 header{
@@ -27,19 +35,50 @@ small{
 **********************************************/
 #section-infos{
 	display: flex;
+	flex-direction: column;
 	justify-content: center;
 	align-items: center;
 	background-color: lightblue;
-	padding: 1vh;
+	padding: 0.5vh;
 }
 
 #infos-score{
 	display: flex;
+	justify-content: center;
+	padding: 0.7vh;
 }
 
-#section-infos p {
-	margin: 0;
-	margin-right: 2vw;
+.counter{
+	display: flex;
+	flex-direction: column;
+	text-align: center;
+	margin: 0 10%;
+}
+
+.counter span{
+	font-size: 1.2em;
+}
+
+.smalltext{
+	font-size: 0.8em;
+}
+
+.infos-name{
+	text-transform: uppercase;
+}
+
+.time-block{
+	display: flex; 
+	flex-direction: column; 
+	width: 50px;
+}
+
+#infos-border{
+	border: 1px dotted grey;
+}
+
+#infos-button{
+	margin: 1vh;
 }
 
 #new{
@@ -51,7 +90,7 @@ small{
 }
 
 #section-infos button{
-	margin-right: 1vw;
+	margin-right: 0.5vw;
 }
 
 
@@ -77,7 +116,7 @@ small{
 	position: relative;
     background-color: #fefefe;
     margin: auto;
-	max-height: 80%;
+    max-height: 80%;
 	max-width: 50%;
 	overflow: scroll;
     padding: 0;
@@ -88,85 +127,75 @@ small{
 	animation-fill-mode: both;
 }
 
-#endgame{
-	padding-top: 10%;
-}
-
-#endgame .modal-content{
-	overflow: hidden;
-	display: flex;
-	flex-direction: column;
-	justify-content: center;
-	font-size: 1.2em;
-}
-
-#endgame .modal-content h2 {
-	background-color: blue;
-	color: #FFF;
-	margin: 0;
-	padding: 1%;
-	font-size: 1.6em;
-}
-
-#endgame p{
-	text-align: center;
-}
-
-#newgame{
-	margin: auto;
-	background-color: lightgreen;
-	padding: 3%;
-	margin-bottom: 5%;
-}
-
-#endgamewindow{
-	display: flex;
-	justify-content: center;
-	align-items: center;
-} 
-
-#endgameinfo{
-	display: flex;
-	flex-direction: column; 
-}
-
-#newrecord{
-	display: flex;
-	flex-direction: column;
-}
-
-#newrecord img{
-	width: 140px;
-	animation: displaynewrecord 0.8s infinite;
-}
-
-@keyframes displaynewrecord{
-	0% { opacity: 0; }
-	100% { opacity: 1; }
-}
-
 
 /* ********************************************
 			MAIN - MENU OPTIONS
 **********************************************/
-#form-default, #form-perso{
-	width: 90%;
-	margin: auto;
+form{
+	padding: 1%;
 }
 
-fieldset{
-	padding: 2%;
-	margin: 2%;
-	border-radius: 5px;
-}
-
-fieldset div{
-	margin: 5px;
-}
-
-#form-submit{
+#content, #content-color{
 	display: flex;
 	justify-content: center;
+	align-self: center;
+} 
+
+fieldset{
+	margin: 1%;
+	border-radius: 5px;
+	flex: 1;
+	display: flex;
+	flex-direction: column;
+	justify-content: center;
+}
+
+#content fieldset div{
+	justify-content: space-around;
+	align-items: center;
+	margin-bottom: 2%;
+}
+
+fieldset:nth-child(1) div > label{
+	flex: 1 0 20%;
+}
+
+#form-all-color span{
+	margin: auto;
+	text-align: center;
+	vertical-align: middle;
+}
+
+#form-button{
+	display: flex;
+	justify-content: center;
+	align-items: center;
+}
+
+input[type="number"]{
+	max-width: 10%;
+	margin: 0 2%;
+}
+
+select, input{
+	padding: 1%;
+}
+
+select{
+	width: 30%;
+}
+
+input[type="range"], input[type="radio"]{
+	margin: 0 2%;
+}
+
+input[type="color"]{
+	width: 80px;
+}
+
+#form-submit, #form-reset{
+	padding: 1%;
+	margin-bottom: 1%;
 }
 
 button{
@@ -174,47 +203,20 @@ button{
 	padding: 8px;
 }
 
-input, select{
-	border-radius: 5px;
-	padding: 3px;
-}
-
 button[type="submit"]{
 	background-color: lightgreen;
-	padding: 10px;
-	margin-bottom: 2%;
+	font-size: 0.9em;
 }
 
-#snake_color, #food_color, #obstacles_color{
-	margin-right: 2%;
+button[type="reset"]{
+	background-color: lightcoral;
+	font-size: 0.9em;
 }
 
 
 /* ********************************************
 			MAIN - MENU MEILLEURS SCORES
 **********************************************/
-#historique{
-	background-color: crimson;
-	color: #FFF;
-	margin: 10px;
-	padding: 5px;
-}
-
-#historique:hover{
-	background-color: #FFF;
-	color: crimson;
-}
-
-@keyframes animatetop {
-    from {top: -300px; opacity: 0}
-    to {top: 0; opacity: 1}
-}
-
-article{
-	padding: 10px;
-	margin-bottom: 5%;
-}
-
 ul, li{
 	margin: 0;
 	padding: 0;
@@ -227,6 +229,7 @@ ul, li{
 	align-items: center;
 	margin: 0;
 	height: 40px;
+	text-transform: uppercase;
 }
 
 #section-form .onglets ul, #section-form .onglets li{
@@ -234,32 +237,27 @@ ul, li{
 }
 
 #section-score .onglets ul, #section-score .onglets li{
-	flex: 1 0 15%;
+	flex: 1 0 20%;
 }
 
 .onglets{
 	background-color: lightblue;
-}
-
-.onglets, h2{
-	text-align: center;
-}
-
-.onglets span{
-	padding: 5px;
-	font-weight: bold;
+	box-shadow: 1px 1px 10px black;
 }
 
 .onglets li.actif{
 	background-color: blue;
 	color: #FFF;
+	box-shadow: 1px 1px 4px black;
 }
 
 .close {
     color: darkred;
     font-weight: bold;
-	font-size: 1.6em;
-	margin-right: 10px;
+	font-size: 2em;
+	padding: 3%;
+	font-weight: bold;
+	flex: 1;
 }
 
 .close:hover,
@@ -269,11 +267,16 @@ ul, li{
     cursor: pointer;
 }
 
+h2{
+	text-align: center;
+}
+
 table{
 	border-collapse: collapse;
 	text-align: center;
 	margin: auto;
 	display: none;
+	width: 90%;
 }
 
 td,th{
@@ -294,10 +297,27 @@ tbody tr:nth-child(3){
 	background-color: Peru; 
 }
 
+article{
+	padding: 10px;
+	margin-bottom: 5%;
+}
+
 article div{
 	text-align: center;
 	font-size: 1.2em;
 	color: red;
+}
+
+.historique{
+	background-color: crimson;
+	color: #FFF;
+	margin: 10px;
+	padding: 5px;
+}
+
+.historique:hover{
+	background-color: #FFF;
+	color: crimson;
 }
 
 
@@ -305,13 +325,18 @@ article div{
 /* ********************************************
 			MAIN - SECTION GAME
 **********************************************/
+#section-game{
+	margin-top: 30px;
+	height: 50vh;
+}
+
 #container{
 	width: 400px;
 	height: 200px;
 	margin: auto;
-	border: 1px solid black;
 	position: relative;
 	overflow: hidden;
+	border: 2px solid black;
 	box-shadow: 1px 1px 10px black;
 }
 
@@ -325,13 +350,17 @@ article div{
 	z-index: 1;
 }
 
-#food{
+#food, #food-special{
 	width: 10px;
 	height: 10px;
 	position: absolute;
 	border-radius: 50%;
 	background-color: red;
 	display: none;
+}
+
+#food-special{
+	animation: flashing 0.8s infinite;
 }
 
 .snake_body{
@@ -341,74 +370,127 @@ article div{
 	background-color: black;
 }
 
-#section-game{
-	margin-top: 30px;
-	height: 50vh;
-}
-
 .obstacle{
 	position: absolute;
 	width: 3px;
 	height: 20px;
-	background-color: royalblue;
+	background-color: blue;
 }
+
+
+
+/* ********************************************
+		MAIN - SECTION FIN DE PARTIE
+**********************************************/
+#endgame{
+	padding-top: 10%;
+}
+
+#endgame .modal-content{
+	overflow: hidden;
+	display: flex;
+	flex-direction: column;
+	justify-content: center;
+	font-size: 1.2em;
+}
+
+#endgame h2 {
+	background-color: blue;
+	color: #FFF;
+	margin: 0;
+	padding: 1%;
+	font-size: 1.6em;
+}
+
+#endgame p{
+	text-align: center;
+	padding: 1%;
+}
+
+#newgame{
+	margin: auto;
+	background-color: lightgreen;
+	margin-bottom: 5%;
+}
+
+#endgamewindow{
+	display: flex;
+	justify-content: center;
+	align-items: center;
+} 
+
+#endgameinfo{
+	display: flex;
+	flex-direction: column; 
+	width: 50%;
+}
+
+#newrecord img{
+	width: 140px;
+	animation: flashing 0.8s infinite;
+}
+
+
+
+/* ********************************************
+				ANIMATIONS
+**********************************************/
+@keyframes animatetop {
+    from {top: -300px; opacity: 0}
+    to {top: 0; opacity: 1}
+}
+
+@keyframes flashing{
+	0% { opacity: 0; }
+	100% { opacity: 1; }
+}
+
 
 
 /* ********************************************
 			MEDIAS - QUERIES
 **********************************************/
-@media screen and (max-width: 1000px){
+@media screen and (max-width: 1300px){
 	.modal-content {
-		max-width: 95vw;
+		max-width: 90vw;
 	}
 }
 
-@media screen and (max-width: 500px){
+@media screen and (max-width: 700px){
+	body{
+		font-size: 0.9em;
+	}
+
 	header{
 		justify-content: flex-start;
-	}
-	
-	body{
-		font-size: 0.7em;
-	}
-
-	input, select{
-		padding: 0;
-	}
-
-	button, input, select{
-		font-size: 1em;
-	}
-
-	#historique{
-		margin: 3%;
 		padding: 1%;
+		font-size: 0.8em;
 	}
 
-	.close {
-		font-size: 2em;
-	}
-
-	#newrecord img{
-		width: 100px;
+	header img{
+		width: 50px;
 	}
 
 	#section-infos{
-		display: flex;
-		flex-direction: column;
-	}
-
-	#infos-button, #infos-score{
-		display: flex;
-		margin: 1%;
+		padding: 0;
 	}
 
 	#section-infos button{
 		margin-right: 5vw;
+		font-size: 0.9em;
 	}
 
-	select, input[type="number"]{
-		width: 25%;
+	#infos-button, #infos-score{
+		display: flex;
+	}
+
+	form{
+		padding: 4%;
+	}
+
+	#content, #param{
+		display: flex;
+		flex-direction: column;
 	}
 
 	#form-all-color{
@@ -417,10 +499,48 @@ article div{
 	}
 
 	#form-all-color span{
+		display: flex;
+		justify-content: center;
+		align-items: center;
+		text-align: left;
 		margin: 1%;
 	}
-	
+
+	#form-all-color span label{
+		flex: 1 0 10%;
+	}
+
+	input[type="color"]{
+		flex: 1 0 10%;
+	}
+
+	input[type="number"]{
+		max-width: 15%;
+		width: 25%;
+	}
+
+	.onglets ul, .onglet li{
+		font-size: 0.8em;
+	}
+
+	#section-score table{
+		font-size: 0.8em;
+	}
+
+	.historique{
+		margin: 3%;
+		padding: 1%;
+	}
+
+	.close {
+		font-size: 2.5em;
+	}
+
 	#endgame{
 		padding-top: 30vh;
+	}
+
+	#newrecord img{
+		width: 120px;
 	}
 }
